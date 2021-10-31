@@ -66,35 +66,30 @@ NO2_piv = piv_wide_on_name(NO2_df)
 Benzene_piv = piv_wide_on_name(Benzene_df)
 Formaldehyde_piv = piv_wide_on_name(Formaldehyde_df)
 
-# now we'll cut down each dataframe based on the dates we want to examine
-# we'll also be converting the dates to integers for easier plotting
-# we may as well sort them based on the date while we're at it
-
-# particle_piv has annual averages, so we'll take those
-particle_piv = select_dates(particle_piv, 'Annual Average ')
-
-# O3_piv has measurments recorded in the summer of each year,
-# that's probably as close as we can get to a yearly average
-O3_piv = select_dates(O3_piv, '^Summer ')
-
-# SO2_piv is a bit weirder, the observations go from the start of winter in one year,
-# until the beginning of winter in the next. It makes tracking things annualy tricky,
-# but since the vast majority of the observation is in the second year of each time period,
-# I feel comfortable tracking it all as data for the latter time period,
-# now we just need to get the last 2 digits of the time period and add 2000
-SO2_piv = select_dates(SO2_piv, 'Winter .....')
-SO2_piv$Time.Period = SO2_piv$Time.Period + 2000
-
-# NO2_piv has annual averages, so we can jsut use those
-NO2_piv = select_dates(NO2_piv, 'Annual Average ')
-
 # looks like Benzene_piv only has data for a couple years,
 # and there isn't any data on death rates or hospitalizations
-# with that little information, I don;t think it makes sense to include it in my analysis,
+# with that little information, I don't think it makes sense to include it in my analysis,
 # but I'll leave the references to it in to dcument the process.
 
 # Looks like Formaldehyde is in the same situation, out of the analysis it goes.
 
-summary(particle_piv)
-head(particle_piv)
-filter(particle_piv, !anyNA(particle_piv))
+# now to pslit the dataframes into seperate ones for each variable
+# This will let us eliminate null values while keeping all other data intact
+# also I couldn't think of a different way to do this
+particle_measures = particle_piv[, 1:6]
+particle_measures = filter(particle_measures, !is.na(particle_measures$`Fine Particulate Matter (PM2.5)`))
+
+particle_deaths = particle_piv[, c(1, 2, 3, 4, 5, 7)]
+particle_deaths = filter(particle_deaths, !is.na(particle_deaths$`PM2.5-Attributable Deaths`))
+
+particle_emergencies = particle_piv[, c(1, 2, 3, 4, 5, 8)]
+particle_emergencies = filter(particle_emergencies, !is.na(particle_emergencies))
+
+# IMPORTANT NOTE TO SELF!!!
+# REGERSSION DOESN'T WORK HERE
+# THE DATA JUST ISN'T FORMATTED IN A WAY THAT ALLOWS FOR IT
+# FOCUS ON CHANGE OVER TIME IN DIFFERNT AREAS
+
+summary(particle_deaths)
+head(particle_deaths)
+unique(particle_deaths$Time.Period)
