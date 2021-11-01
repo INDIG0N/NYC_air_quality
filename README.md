@@ -8,7 +8,7 @@ https://docs.google.com/presentation/d/1X4Gg43ccbjMOkuUjvKNIsTncLGFi7vYNGIT6HeXv
 The presentation slides provided here will lagely be focsing on a few main areas in NYC such as Manhattan, Statten Island, and the city as a whole. However, graphs for every area noted in the dataset can be found in the images folder.
 
 ## How to use this repo
-Within the imagesfolder you will find 4 sub-folders, each corresponoding to a different pollutant. Ozone (O3), Sulfur Dioxide (SO2), Nitrite (NO2), and general fine particles.  
+Within the images folder you will find 4 sub-folders, each corresponoding to a different pollutant. Ozone (O3), Sulfur Dioxide (SO2), Nitrite (NO2), and general fine particles. You will also find a "main" sub-folder, that contains a copies of a few graphs I used for the full presentation for easy access.
   
 ### NO2 & SO2
 the original dataset (linked in the sources file) tracked the prevalence of NO2 and SO2 in differnt areas of NYC over time.For each of those areas, there will be a line graph deatiling the change in the levels of the pullutant over time.  
