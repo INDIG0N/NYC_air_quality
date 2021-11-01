@@ -34,18 +34,18 @@ make_graphs = function(your.frame, new.file.path, x.label, y.label, time.factor 
     file.name = paste(place, '.png', sep = '')
     df = your.frame[your.frame$Geo.Place.Name == place, ]
     if (time.factor) {
-      ggplot()
-      barplot(df[[6]], names.arg = df$Time.Period, xlab = x.label, ylab = y.label, main = as.character(place))
-      ggsave(filename = file.name, path = new.file.path)
+      temp = ggplot(data = df, aes_string('Time.Period', colnames(your.frame)[6])) + geom_bar(stat = 'identity')
+      temp = temp + ggtitle(place) + xlab(x.label) + ylab(y.label)
+      ggsave(filename = file.name, path = new.file.path, plot = temp)
     } else {
-      ggplot()
-      plot(x = df$Time.Period, y = df[[6]], xlab = x.label, ylab = y.label, main = place)
-      ggsave(filename = file.name, path = new.file.path)
+      temp = ggplot(data = df, aes_string('Time.Period', colnames(your.frame)[6])) + geom_line()
+      temp = temp + ggtitle(place) + xlab(x.label) + ylab(y.label)
+      ggsave(filename = file.name, path = new.file.path, plot = temp)
     }
   }
 }
 ##########
-
+?scale_y_continuous
 if (interactive()) {
   df = read.csv('../data/Air_Quality.csv')
   
@@ -101,14 +101,17 @@ if (interactive()) {
   particle_measures = particle_piv[, 1:6]
   particle_measures = filter(particle_measures, !is.na(particle_measures[, 6]))
   particle_measures = select_dates(particle_measures, 'Annual Average ')
+  colnames(particle_measures)[6] = 'Value'
   
   particle_deaths = particle_piv[, c(1, 2, 3, 4, 5, 7)]
   particle_deaths = filter(particle_deaths, !is.na(particle_deaths[, 6]))
   particle_deaths$Time.Period = as.factor(particle_deaths$Time.Period)
+  colnames(particle_deaths)[6] = 'Value'
   
   particle_emergencies = particle_piv[, c(1, 2, 3, 4, 5, 8)]
   particle_emergencies = filter(particle_emergencies, !is.na(particle_emergencies[, 6]))
   particle_emergencies$Time.Period = as.factor(particle_emergencies$Time.Period)
+  colnames(particle_emergencies)[6] = 'Value'
   
   particle_emergencies_kids = particle_emergencies[particle_emergencies[['Measure']] == 'Estimated Annual Rate- Children 0 to 17 Yrs Old',]
   particle_emergencies_adults = particle_emergencies[particle_emergencies[['Measure']] == 'Estimated Annual Rate- 18 Yrs and Older',]
@@ -117,14 +120,17 @@ if (interactive()) {
   O3_measures = O3_piv[, 1:6]
   O3_measures = filter(O3_measures, !is.na(O3_measures[, 6]))
   O3_measures = select_dates(O3_measures, '^Summer ')
+  colnames(O3_measures)[6] = 'Value'
   
   O3_deaths = O3_piv[c(1, 2, 3, 4, 5, 7)]
   O3_deaths = filter(O3_deaths, !is.na(O3_deaths[, 6]))
   O3_deaths$Time.Period = as.factor(O3_deaths$Time.Period)
+  colnames(O3_deaths)[6] = 'Value'
   
   O3_emergencies = O3_piv[c(1, 2, 3, 4, 5, 8)]
   O3_emergencies = filter(O3_emergencies, !is.na(O3_emergencies[, 6]))
   O3_emergencies$Time.Period = as.factor(O3_emergencies$Time.Period)
+  colnames(O3_emergencies)[6] = 'Value'
   
   O3_emergencies_kids = O3_emergencies[O3_emergencies[['Measure']] != 'Estimated Annual Rate- 18 Yrs and Older',]
   O3_emergencies_adults = O3_emergencies[O3_emergencies[['Measure']] == 'Estimated Annual Rate- 18 Yrs and Older',]
@@ -136,11 +142,13 @@ if (interactive()) {
   SO2_measures = filter(SO2_piv, !is.na(SO2_piv[, 6]))
   SO2_measures = select_dates(SO2_measures, 'Winter ....-')
   SO2_measures$Time.Period = SO2_measures$Time.Period + 2000
+  colnames(SO2_measures)[6] = 'Value'
   
   # NO2_PIV
   # NO2_piv doesn't have any deaths or hospitalizations either,
   # at least it doesn't have any nans to filter out.
   NO2_measures = select_dates(NO2_piv, 'Annual Average ')
+  colnames(NO2_measures)[6] = 'Value'
   
   # now we can make all of the plots
   make_graphs(particle_measures, './../images/particle/measures/', 'Year', 'Fine Particles Mean mcg / m^3')
@@ -157,5 +165,5 @@ if (interactive()) {
   
   make_graphs(NO2_measures, './../images/NO2/measures/', 'Year', 'NO2 ppb (parts per billion)')
   
-  summary(NO2_measures)
+  head(particle_measures)
 }
