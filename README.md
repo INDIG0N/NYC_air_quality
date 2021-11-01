@@ -5,7 +5,7 @@ Pollutants can have a major impact on younger people, people with asthma, oor an
 The link to my full presentation is here:
 https://docs.google.com/presentation/d/1X4Gg43ccbjMOkuUjvKNIsTncLGFi7vYNGIT6HeXv7t8/edit?usp=sharing  
   
-The presentation slides provided here will lagely be focsing on a few main areas in NYC such as Manhattan, Statten Island, and the city as a whole. However, graphs for every area noted in the dataset can be found in the images folder.
+The presentation slides provided here will lagely be focsing on a few main areas in NYC such as Manhattan, Staten Island, and the city as a whole. However, graphs for every area noted in the dataset can be found in the images folder.
 
 ## How to use this repo
 Within the images folder you will find 4 sub-folders, each corresponoding to a different pollutant. Ozone (O3), Sulfur Dioxide (SO2), Nitrite (NO2), and general fine particles. You will also find a "main" sub-folder, that contains a copies of a few graphs I used for the full presentation for easy access.
